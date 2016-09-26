@@ -1,9 +1,14 @@
 package com.coolweather.app.activity;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -70,6 +75,23 @@ public class ChooseAreaActivity extends Activity {
         adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,dataList);
         listView.setAdapter(adapter);
         coolWeatherDB = CoolWeatherDB.getInstance(this);
+
+        Log.i("ChooseAreaActivity","从这里开始");
+        //ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.INTERNET},1);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int index, long arg3) {
+                if(currentLevel == LEVEL_PROVINCE){
+                    selectedProvince = provinceList.get(index);
+                    queryCities();
+                }else if(currentLevel == LEVEL_CITY){
+                    selectedCity = cityList.get(index);
+                    queryCounties();
+                }
+            }
+        });
+        queryProvinces(); //加载省级数据
     }
 
     /**
@@ -95,7 +117,7 @@ public class ChooseAreaActivity extends Activity {
      * 查询选中省内所有的市，优先从数据库查询，如果没有查询到再去服务器上查询
      */
     private void queryCities(){
-        cityList = coolWeatherDB.loadCities(selectedCity.getId());
+        cityList = coolWeatherDB.loadCities(selectedProvince.getId());
         if(cityList.size() > 0){
             dataList.clear();
             for(City city:cityList){
@@ -103,7 +125,7 @@ public class ChooseAreaActivity extends Activity {
             }
             adapter.notifyDataSetChanged();
             listView.setSelection(0);
-            titleText.setText(selectedCity.getCityName());
+            titleText.setText(selectedProvince.getProvinceName());
             currentLevel = LEVEL_CITY;
         }else{
             queryFromServer(selectedProvince.getProvinceCode(),"city");
@@ -132,9 +154,9 @@ public class ChooseAreaActivity extends Activity {
     /**
      * 根据传入的代号和类型从服务器上查询省市县数据
      */
-    private void querFromServer(final String code,final String type){
+    private void queryFromServer(final String code,final String type){
         String address;
-        if(!TextUtils.isEmpty(code)){
+        if(!TextUtils.isEmpty(code)){ //若不为空，则根据code获得当前的信息
             address = "http://www.weather.com.cn/data/list3/city" + code + ".xml";
         }else{
             address = "http://www.weather.com.cn/data/list3/city.xml";

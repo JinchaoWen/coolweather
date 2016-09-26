@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.coolweather.app.db.CoolWeatherOpenHelper;
 
@@ -30,9 +31,10 @@ public class CoolWeatherDB {
     /**
      *  将构造方法私有化
      */
-    private CoolWeatherDB(Context context){
+    private CoolWeatherDB(Context context){ //构造函数
         CoolWeatherOpenHelper dbHelper = new CoolWeatherOpenHelper(context,DB_NAME,null,VERSION);
         db = dbHelper.getWritableDatabase();
+        Log.i("CoolWeatherDB","数据库创建成功");
     }
 
     /**
