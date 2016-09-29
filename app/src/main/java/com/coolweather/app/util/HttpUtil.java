@@ -1,7 +1,5 @@
 package com.coolweather.app.util;
 
-import android.util.Log;
-
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -12,6 +10,8 @@ import java.net.URL;
  * Created by dell on 2016/9/14.
  */
 public class HttpUtil {
+
+    final static String TAG = "HttpUtil";
 
     public static void sendHttpRequest(final String address,final HttpCallbackListener listener){
         new Thread(new Runnable() {
@@ -29,13 +29,13 @@ public class HttpUtil {
                     StringBuilder response = new StringBuilder();
                     String line;
                     while((line = reader.readLine()) != null){
-                        Log.d("HttpUtil获取的内容：",line);
+                        LogUtil.i( TAG+"获取的内容：",line);
                         response.append(line);
                     }
                     if(listener != null){
                         //回调onFinish()方法
                         listener.onFinish(response.toString());
-                        Log.d("HttpUtil",response.toString());
+                        LogUtil.i(TAG,response.toString());
                     }
                 }catch (Exception e){
                     if(listener != null){

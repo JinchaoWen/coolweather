@@ -8,10 +8,6 @@ public class Province {
     private String provinceName;
     private String provinceCode;
 
-    public int getId(){
-        return id;
-    }
-
     public String getProvinceCode() {
         return provinceCode;
     }
@@ -31,4 +27,7 @@ public class Province {
     public void setId(int id){
         this.id = id;
     }
+
+    public int getId(){ return id; }
+
 }

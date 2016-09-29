@@ -16,10 +16,12 @@ import android.widget.TextView;
 import com.coolweather.app.R;
 import com.coolweather.app.util.HttpCallbackListener;
 import com.coolweather.app.util.HttpUtil;
+import com.coolweather.app.util.LogUtil;
 import com.coolweather.app.util.Utility;
 
 public class WeatherActivity extends AppCompatActivity implements View.OnClickListener{
 
+    final String TAG = "WeatherActivity";
     private LinearLayout weatherInfoLayout;
 
     /**
@@ -172,11 +174,17 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
     private void showWeather(){
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         cityNameText.setText(prefs.getString("city_name",""));
+        LogUtil.i(TAG,"城市名：" + prefs.getString("city_name",""));
         temp1Text.setText(prefs.getString("temp1",""));
+        LogUtil.i(TAG,"最低温度：" + prefs.getString("temp1",""));
         temp2Text.setText(prefs.getString("temp2",""));
+        LogUtil.i(TAG,"最高温度：" + prefs.getString("temp2",""));
         weatherDespText.setText(prefs.getString("weather_desp",""));
+        LogUtil.i(TAG,"天气状况：" + prefs.getString("weather_desp",""));
         publishText.setText("今天" + prefs.getString("publish_time","") + "发布");
         currentDateText.setText(prefs.getString("current_date",""));
+        //currentDateText.setText("我");
+        LogUtil.i(TAG,"今天的日期：" + prefs.getString("current_data",""));
         weatherInfoLayout.setVisibility(View.VISIBLE);
         cityNameText.setVisibility(View.VISIBLE);
     }

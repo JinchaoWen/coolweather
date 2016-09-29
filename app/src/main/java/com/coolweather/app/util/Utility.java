@@ -99,10 +99,14 @@ public class Utility {
             JSONObject jsonObject = new JSONObject(response);
             JSONObject weatherInfo = jsonObject.getJSONObject("weatherinfo");
             String cityName = weatherInfo.getString("city");
+            LogUtil.i("Utility解析出来的","城市名：" + cityName);
             String weatherCode = weatherInfo.getString("cityid");
             String temp1 = weatherInfo.getString("temp1");
+            LogUtil.i("Utility解析出来的","最低温度：" + temp1);
             String temp2 = weatherInfo.getString("temp2");
+            LogUtil.i("Utility解析出来的","最高温度：" + temp2);
             String weatherDesp = weatherInfo.getString("weather");
+            LogUtil.i("Utility解析出来的","天气状况：" + weatherDesp);
             String publishTime = weatherInfo.getString("ptime");
             saveWeatherInfo(context,cityName,weatherCode,temp1,temp2,weatherDesp,publishTime);
         }catch (JSONException e){
@@ -124,7 +128,7 @@ public class Utility {
         editor.putString("temp2",temp2);
         editor.putString("weather_desp",weatherDesp);
         editor.putString("publish_time",publishTime);
-        editor.putString("current_data",sdf.format(new Date()));
+        editor.putString("current_data",sdf.format(new Date()).toString());
         editor.commit();
     }
 }
